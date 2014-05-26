@@ -1,10 +1,9 @@
 import java.io.*;
+import javax.mail.*;
 
 public class Main {
 
 	public static void main(String[] args) {
-		
-		System.out.println("hola\n");
 				
 		try{            
             FileInputStream fstream = new FileInputStream("D:\\acc\\CSDMC2010_SPAM\\ExtractContent.py");  	// Abrimos el archivo
@@ -18,9 +17,7 @@ public class Main {
             entrada.close(); // Cerramos el archivo
         }catch (Exception e){ //Catch de excepciones
             System.err.println("Ocurrio un error: " + e.getMessage());
-        }
-		
-		System.out.println("chau\n");
+        }			
 		
 	}
 
