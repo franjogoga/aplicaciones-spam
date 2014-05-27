@@ -22,7 +22,7 @@ public class Main {
 		
 		for (int i=0; i<4292; i++) {
 			
-			if (i>=0 && i<=5) {			
+			if (i>=0 && i<=9) {			
 				File file = new File("/home/jonatan/workspace/extraidoTEST/TEST_0000"+i+".eml");		
 				Scanner scanFile = new Scanner(new FileReader(file));						
 						 		
@@ -36,10 +36,11 @@ public class Main {
 				scanFile.close();
 				
 				for(int j=0; j<clavesList.size(); j++) {
-			    	if (contenido.contains(clavesList.get(j))) {cantClaves++; System.out.println(j + " "+clavesList.get(j));}
+			    	if (contenido.contains(clavesList.get(j)))
+			    		cantClaves++;
 			    }
 				
-				System.out.println("Correo:"+i+"\tNúmero de palabras:"+cantPalabras+"\t\tNúmero de frases clave:"+cantClaves);
+				System.out.println("Correo:"+i+"\tPalabras:"+cantPalabras+"\t\tFrases clave:"+cantClaves);
 			}
 			
 			if (i>=10 && i<=99) {
