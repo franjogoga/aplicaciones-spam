@@ -4,21 +4,21 @@ import java.util.*;
 public class Main {
 
 	public static void main(String[] args) throws Exception{
-		
+		String rutaTest="/home/jonatan/workspace/extraidoTEST/";
 		ArrayList<String> clavesList = getListaClaves("/home/jonatan/workspace/claves.txt");
 		
 		for (int i=0; i<4292; i++) {						
 			if (i>=0 && i<=9) {			
-				getCaracteristicas(i,"/home/jonatan/workspace/extraidoTEST/TEST_0000"+i+".eml", clavesList);				
+				getCaracteristicas(i,rutaTest+"TEST_0000"+i+".eml", clavesList);				
 			}			
 			if (i>=10 && i<=99) {
-				getCaracteristicas(i,"/home/jonatan/workspace/extraidoTEST/TEST_000"+i+".eml", clavesList);
+				getCaracteristicas(i,rutaTest+"TEST_000"+i+".eml", clavesList);
 			}
 			if (i>=100 && i<=999) {
-				getCaracteristicas(i,"/home/jonatan/workspace/extraidoTEST/TEST_00"+i+".eml", clavesList);
+				getCaracteristicas(i,rutaTest+"TEST_00"+i+".eml", clavesList);
 			}
 			if (i>=1000 && i<=9999) {
-				getCaracteristicas(i,"/home/jonatan/workspace/extraidoTEST/TEST_0"+i+".eml", clavesList);
+				getCaracteristicas(i,rutaTest+"TEST_0"+i+".eml", clavesList);
 			}							
 		}
 	}	
