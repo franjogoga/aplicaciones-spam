@@ -3,11 +3,14 @@ import java.util.*;
 
 public class Main {
 
+	static ArrayList<String> palabras= new ArrayList<String>();
+	static Hashtable<String, Integer> pals= new Hashtable<String, Integer>();
+	
 	public static void main(String[] args) throws Exception{
 		String rutaTest="/home/jonatan/workspace/extraidoTEST/";
 		ArrayList<String> clavesList = getListaClaves("/home/jonatan/workspace/claves.txt");
-		
-		for (int i=0; i<4292; i++) {						
+		//getCaracteristicas(0,"/home/jonatan/workspace/prueba.txt", clavesList);
+		for (int i=0; i<10; i++) {						
 			if (i>=0 && i<=9) {			
 				getCaracteristicas(i,rutaTest+"TEST_0000"+i+".eml", clavesList);				
 			}			
@@ -19,7 +22,15 @@ public class Main {
 			}
 			if (i>=1000 && i<=9999) {
 				getCaracteristicas(i,rutaTest+"TEST_0"+i+".eml", clavesList);
-			}							
+			}			
+		
+		}
+		
+		System.out.println();
+		Enumeration key = pals.keys();
+		Enumeration elements = pals.elements();
+		while (key.hasMoreElements()) {
+			System.out.println(key.nextElement() + " "+ elements.nextElement());
 		}
 	}	
 	
@@ -49,18 +60,25 @@ public class Main {
 		String theWord, contenido="";
 		int cantPalabras=0, cantClaves=0;
 		while (scanFile.hasNext()){		
-		    theWord = scanFile.next();
+		    theWord = scanFile.next();		   
+		    if(pals.containsKey(theWord)) {
+		    	pals.put(theWord, pals.get(theWord)+1);
+		    }else
+		    {
+		    	pals.put(theWord, 1);
+		    }		    		    
 		    contenido=contenido.toLowerCase()+" "+theWord;				    				    		    				   
 		    cantPalabras++;				    
 		}				
 		scanFile.close();
 		
-		for(int j=0; j<clavesList.size(); j++) {
-	    	if (contenido.contains(clavesList.get(j)))
-	    		cantClaves++;
-	    }
+//		for(int j=0; j<clavesList.size(); j++) {
+//	    	if (contenido.contains(clavesList.get(j)))
+//	    		cantClaves++;
+//	    }
 		
 		System.out.println("Correo:"+i+"\tPalabras:"+cantPalabras+"\t\tFrases clave:"+cantClaves);
+		
 	}
 	
 
