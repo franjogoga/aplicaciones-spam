@@ -65,8 +65,8 @@ public class Main {
 		    palabra = correoScanArch.next();		   
 		    if(pals.containsKey(palabra)) {
 		    	pals.put(palabra, pals.get(palabra)+1);
-		    }else
-		    {
+		    } 
+		    else {
 		    	pals.put(palabra, 1);
 		    }		    		    
 		    contenido=contenido.toLowerCase()+" "+palabra;				    				    		    				   		    			    
@@ -77,7 +77,7 @@ public class Main {
 //	    	if (contenido.contains(clavesList.get(j)))
 //	    		cantClaves++;
 //	    }
-		System.out.println("Correo:"+i+"\t\tFrases clave:"+cantClaves);	
+		System.out.println("Correo:"+i+"\tFrases clave:"+cantClaves);	
 	}	
 
 	public static <K extends Comparable,V extends Comparable> LinkedHashMap<K,V> sortByValues(Map<K,V> map){
