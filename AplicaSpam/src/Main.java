@@ -11,7 +11,7 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception{
 		String rutaTest="D:\\acc\\workspace\\extraidoTRAINING\\";
-		ArrayList<String> clavesList = getListaClaves("/home/jonatan/workspace/claves.txt");		
+		ArrayList<String> clavesList = getListaClaves();		
 		for (int i=0; i<10; i++) {						
 			if (i>=0 && i<=9) {			
 				getCaracteristicas(i,rutaTest+"TRAIN_0000"+i+".eml", clavesList);				
@@ -41,22 +41,29 @@ public class Main {
 //		System.out.println(StringUtils.countMatches(str, findStr));
 	}	
 	
-	public static ArrayList<String> getListaClaves(String clavesArch) {
+	public static ArrayList<String> getListaClaves() {
 		ArrayList<String> clavesList = new ArrayList<String>();
-		try {
-			FileInputStream fstream = new FileInputStream(clavesArch);
-			DataInputStream entrada = new DataInputStream(fstream);
-			BufferedReader buffer = new BufferedReader(new InputStreamReader(entrada));			
-			String strLinea;
-
-			while ((strLinea = buffer.readLine()) != null) 
-				clavesList.add(strLinea);							
-			entrada.close();			
-		} catch (Exception e) {
-			System.err.println("Ocurrio un error: " + e.getMessage());
-		}		
+		
 		return clavesList;
 	}
+	
+	
+//	public static ArrayList<String> getListaClaves(String clavesArch) {
+//		ArrayList<String> clavesList = new ArrayList<String>();
+//		try {
+//			FileInputStream fstream = new FileInputStream(clavesArch);
+//			DataInputStream entrada = new DataInputStream(fstream);
+//			BufferedReader buffer = new BufferedReader(new InputStreamReader(entrada));			
+//			String strLinea;
+//
+//			while ((strLinea = buffer.readLine()) != null) 
+//				clavesList.add(strLinea);							
+//			entrada.close();			
+//		} catch (Exception e) {
+//			System.err.println("Ocurrio un error: " + e.getMessage());
+//		}		
+//		return clavesList;
+//	}
 	
 	public static void getCaracteristicas(int i, String strCorreoArch, ArrayList<String> clavesList) throws Exception {
 		File correoArch = new File(strCorreoArch);		
