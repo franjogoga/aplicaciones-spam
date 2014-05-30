@@ -47,10 +47,8 @@ public class Main {
 			String strLinea;
 
 			while ((strLinea = buffer.readLine()) != null) 
-				clavesList.add(strLinea);				
-			
-			entrada.close();
-			
+				clavesList.add(strLinea);							
+			entrada.close();			
 		} catch (Exception e) {
 			System.err.println("Ocurrio un error: " + e.getMessage());
 		}		
