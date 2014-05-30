@@ -87,11 +87,8 @@ public class Main {
 //	    	if (contenido.contains(clavesList.get(j)))
 //	    		cantClaves++;
 //	    }
-		
-		System.out.println("Correo:"+i+"\tPalabras:"+cantPalabras+"\t\tFrases clave:"+cantClaves);
-		
-	}
-	
+		System.out.println("Correo:"+i+"\tPalabras:"+cantPalabras+"\t\tFrases clave:"+cantClaves);	
+	}	
 
 	public static <K extends Comparable,V extends Comparable> LinkedHashMap<K,V> sortByValues(Map<K,V> map){
         List<Map.Entry<K,V>> entries = new LinkedList<Map.Entry<K,V>>(map.entrySet());
@@ -102,8 +99,7 @@ public class Main {
                 return o1.getValue().compareTo(o2.getValue());
             }
         });      
-        //LinkedHashMap will keep the keys in the order they are inserted
-        //which is currently sorted on natural ordering
+        
         LinkedHashMap<K,V> sortedMap = new LinkedHashMap<K,V>();
         
         for(int i=entries.size()-1; i>=0; --i) {
