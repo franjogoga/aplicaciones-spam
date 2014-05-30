@@ -5,49 +5,39 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 
 public class Main {
-
-	static ArrayList<String> palabras= new ArrayList<String>();
-	static Hashtable<String, Integer> pals= new Hashtable<String, Integer>();
+	
+	static Hashtable<String, Integer> palabras= new Hashtable<String, Integer>();	
 	static String rutaTest="D:\\acc\\workspace\\extraidoTRAINING\\";
 	
 	public static void main(String[] args) throws Exception{
 		
 		ArrayList<String> clavesList = getListaClaves();		
-		for (int i=0; i<10; i++) {						
-			if (i>=0 && i<=9) {			
-				getCaracteristicas(i,rutaTest+"TRAIN_0000"+i+".eml", clavesList);				
-			}			
-			if (i>=10 && i<=99) {
-				getCaracteristicas(i,rutaTest+"TRAIN_000"+i+".eml", clavesList);
-			}
-			if (i>=100 && i<=999) {
-				getCaracteristicas(i,rutaTest+"TRAIN_00"+i+".eml", clavesList);
-			}
-			if (i>=1000 && i<=9999) {
-				getCaracteristicas(i,rutaTest+"TRAIN_0"+i+".eml", clavesList);
-			}
-		}
-		
-		LinkedHashMap<String, Integer> palsOrdenado= sortByValues(pals);
-		Iterator iterator = palsOrdenado.keySet().iterator();
-		int i=0;
-		while (iterator.hasNext() && i!=10) {  
-		   String key = iterator.next().toString();  
-		   String value = palsOrdenado.get(key).toString();  		   
-		   System.out.println(key + " " + value);  
-		   i++;
-		}  				
+//		for (int i=0; i<10; i++) {						
+//			if (i>=0 && i<=9) {			
+//				getCaracteristicas(i,rutaTest+"TRAIN_0000"+i+".eml", clavesList);				
+//			}			
+//			if (i>=10 && i<=99) {
+//				getCaracteristicas(i,rutaTest+"TRAIN_000"+i+".eml", clavesList);
+//			}
+//			if (i>=100 && i<=999) {
+//				getCaracteristicas(i,rutaTest+"TRAIN_00"+i+".eml", clavesList);
+//			}
+//			if (i>=1000 && i<=9999) {
+//				getCaracteristicas(i,rutaTest+"TRAIN_0"+i+".eml", clavesList);
+//			}
+//		}
+					
 //		String str = "helloslkhellodjladfjhello";
 //		String findStr = "hello";
 //		System.out.println(StringUtils.countMatches(str, findStr));
 	}	
 	
-	public static ArrayList<String> getListaClaves() {
+	public static ArrayList<String> getListaClaves() throws Exception{
 		ArrayList<String> clavesList = new ArrayList<String>();
 		
 		for (int i=0; i<10; i++) {						
 			if (i>=0 && i<=9) {		
-				
+				getPalabrasFrecuencia(i, rutaTest+"TRAIN_0000"+i+".eml");
 				//getCaracteristicas(i,rutaTest+"TRAIN_0000"+i+".eml", clavesList);				
 			}			
 			if (i>=10 && i<=99) {
@@ -60,7 +50,15 @@ public class Main {
 				//getCaracteristicas(i,rutaTest+"TRAIN_0"+i+".eml", clavesList);
 			}
 		}
-		
+		LinkedHashMap<String, Integer> palabrasOrdenado= sortByValues(palabras);
+		Iterator iterator = palabrasOrdenado.keySet().iterator();
+		int i=0;
+		while (iterator.hasNext() && i!=10) {  
+		   String key = iterator.next().toString();  
+		   String value = palabrasOrdenado.get(key).toString();  		   
+		   System.out.println(key + " " + value);  
+		   i++;
+		}  		
 		return clavesList;
 	}
 	
@@ -82,6 +80,21 @@ public class Main {
 //		return clavesList;
 //	}
 	
+	public static void getPalabrasFrecuencia(int i, String strCorreoArch) throws Exception{
+		File correoArch = new File(strCorreoArch);		
+		Scanner correoScanArch = new Scanner(new FileReader(correoArch));
+		String palabra;
+		
+		while (correoScanArch.hasNext()){		
+		    palabra = correoScanArch.next();		   
+		    if(palabras.containsKey(palabra))
+		    	palabras.put(palabra, palabras.get(palabra)+1);		    
+		    else 
+		    	palabras.put(palabra, 1);		    	    		    		    			    				    		    				   		    			   
+		}				
+		correoScanArch.close();		
+	}
+
 	public static void getCaracteristicas(int i, String strCorreoArch, ArrayList<String> clavesList) throws Exception {
 		File correoArch = new File(strCorreoArch);		
 		Scanner correoScanArch = new Scanner(new FileReader(correoArch));						
@@ -90,11 +103,11 @@ public class Main {
 		int cantClaves=0;
 		while (correoScanArch.hasNext()){		
 		    palabra = correoScanArch.next();		   
-		    if(pals.containsKey(palabra)) {
-		    	pals.put(palabra, pals.get(palabra)+1);
+		    if(palabras.containsKey(palabra)) {
+		    	palabras.put(palabra, palabras.get(palabra)+1);
 		    } 
 		    else {
-		    	pals.put(palabra, 1);
+		    	palabras.put(palabra, 1);
 		    }		    		    
 		    contenido=contenido.toLowerCase()+" "+palabra;				    				    		    				   		    			    
 		}				
