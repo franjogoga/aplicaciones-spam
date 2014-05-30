@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Main {
 
 	static ArrayList<String> palabras= new ArrayList<String>();
@@ -33,7 +35,7 @@ public class Main {
 		   String value = palsOrdenado.get(key).toString();  		   
 		   System.out.println(key + " " + value);  
 		   i++;
-		}  		
+		}  				
 	}	
 	
 	public static ArrayList<String> getListaClaves(String clavesArch) {
@@ -60,7 +62,7 @@ public class Main {
 		Scanner scanFile = new Scanner(new FileReader(file));						
 				 		
 		String theWord, contenido="";
-		int cantPalabras=0, cantClaves=0;
+		int cantClaves=0;
 		while (scanFile.hasNext()){		
 		    theWord = scanFile.next();		   
 		    if(pals.containsKey(theWord)) {
@@ -69,8 +71,7 @@ public class Main {
 		    {
 		    	pals.put(theWord, 1);
 		    }		    		    
-		    contenido=contenido.toLowerCase()+" "+theWord;				    				    		    				   
-		    cantPalabras++;				    
+		    contenido=contenido.toLowerCase()+" "+theWord;				    				    		    				   		    			    
 		}				
 		scanFile.close();
 		
@@ -78,7 +79,7 @@ public class Main {
 //	    	if (contenido.contains(clavesList.get(j)))
 //	    		cantClaves++;
 //	    }
-		System.out.println("Correo:"+i+"\tPalabras:"+cantPalabras+"\t\tFrases clave:"+cantClaves);	
+		System.out.println("Correo:"+i+"\t\tFrases clave:"+cantClaves);	
 	}	
 
 	public static <K extends Comparable,V extends Comparable> LinkedHashMap<K,V> sortByValues(Map<K,V> map){
