@@ -36,6 +36,9 @@ public class Main {
 		   System.out.println(key + " " + value);  
 		   i++;
 		}  				
+//		String str = "helloslkhellodjladfjhello";
+//		String findStr = "hello";
+//		System.out.println(StringUtils.countMatches(str, findStr));
 	}	
 	
 	public static ArrayList<String> getListaClaves(String clavesArch) {
