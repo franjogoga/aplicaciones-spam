@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
-
 import org.apache.commons.lang3.StringUtils;
 
 public class Main {
@@ -37,26 +36,27 @@ public class Main {
 		
 		for (int i=0; i<10; i++) {						
 			if (i>=0 && i<=9) {		
-				getPalabrasFrecuencia(i, rutaTest+"TRAIN_0000"+i+".eml");
-				//getCaracteristicas(i,rutaTest+"TRAIN_0000"+i+".eml", clavesList);				
+				getPalabrasFrecuencia(i, rutaTest+"TRAIN_0000"+i+".eml");							
 			}			
 			if (i>=10 && i<=99) {
-				//getCaracteristicas(i,rutaTest+"TRAIN_000"+i+".eml", clavesList);
+				getPalabrasFrecuencia(i, rutaTest+"TRAIN_000"+i+".eml");
 			}
 			if (i>=100 && i<=999) {
-				//getCaracteristicas(i,rutaTest+"TRAIN_00"+i+".eml", clavesList);
+				getPalabrasFrecuencia(i, rutaTest+"TRAIN_00"+i+".eml");
 			}
 			if (i>=1000 && i<=9999) {
-				//getCaracteristicas(i,rutaTest+"TRAIN_0"+i+".eml", clavesList);
+				getPalabrasFrecuencia(i, rutaTest+"TRAIN_0"+i+".eml");
 			}
 		}
-		LinkedHashMap<String, Integer> palabrasOrdenado= sortByValues(palabras);
+		
+		LinkedHashMap<String, Integer> palabrasOrdenado= ordenarPorValores(palabras);
 		Iterator iterator = palabrasOrdenado.keySet().iterator();
 		int i=0;
 		while (iterator.hasNext() && i!=10) {  
-		   String key = iterator.next().toString();  
-		   String value = palabrasOrdenado.get(key).toString();  		   
-		   System.out.println(key + " " + value);  
+		   String clave = iterator.next().toString();  		   
+		   String frecuencia = palabrasOrdenado.get(clave).toString();		   
+		   clavesList.add(clave);
+		   System.out.println("Palabra Clave: "+clave + " " + "\tFrecuencia: "+frecuencia);		   
 		   i++;
 		}  		
 		return clavesList;
@@ -120,7 +120,7 @@ public class Main {
 		System.out.println("Correo:"+i+"\tFrases clave:"+cantClaves);	
 	}	
 
-	public static <K extends Comparable,V extends Comparable> LinkedHashMap<K,V> sortByValues(Map<K,V> map){
+	public static <K extends Comparable,V extends Comparable> LinkedHashMap<K,V> ordenarPorValores(Map<K,V> map){
         List<Map.Entry<K,V>> entries = new LinkedList<Map.Entry<K,V>>(map.entrySet());
       
         Collections.sort(entries, new Comparator<Map.Entry<K,V>>() {
