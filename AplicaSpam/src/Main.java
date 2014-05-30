@@ -24,7 +24,7 @@ public class Main {
 			}
 			if (i>=1000 && i<=9999) {
 				getCaracteristicas(i,rutaTest+"TRAIN_0"+i+".eml", clavesList);
-			}					
+			}
 		}
 		
 		LinkedHashMap<String, Integer> palsOrdenado= sortByValues(pals);
@@ -57,23 +57,23 @@ public class Main {
 		return clavesList;
 	}
 	
-	public static void getCaracteristicas(int i, String correoArch, ArrayList<String> clavesList) throws Exception {
-		File file = new File(correoArch);		
-		Scanner scanFile = new Scanner(new FileReader(file));						
+	public static void getCaracteristicas(int i, String strCorreoArch, ArrayList<String> clavesList) throws Exception {
+		File correoArch = new File(strCorreoArch);		
+		Scanner correoScanArch = new Scanner(new FileReader(correoArch));						
 				 		
-		String theWord, contenido="";
+		String palabra, contenido="";
 		int cantClaves=0;
-		while (scanFile.hasNext()){		
-		    theWord = scanFile.next();		   
-		    if(pals.containsKey(theWord)) {
-		    	pals.put(theWord, pals.get(theWord)+1);
+		while (correoScanArch.hasNext()){		
+		    palabra = correoScanArch.next();		   
+		    if(pals.containsKey(palabra)) {
+		    	pals.put(palabra, pals.get(palabra)+1);
 		    }else
 		    {
-		    	pals.put(theWord, 1);
+		    	pals.put(palabra, 1);
 		    }		    		    
-		    contenido=contenido.toLowerCase()+" "+theWord;				    				    		    				   		    			    
+		    contenido=contenido.toLowerCase()+" "+palabra;				    				    		    				   		    			    
 		}				
-		scanFile.close();
+		correoScanArch.close();
 		
 //		for(int j=0; j<clavesList.size(); j++) {
 //	    	if (contenido.contains(clavesList.get(j)))
