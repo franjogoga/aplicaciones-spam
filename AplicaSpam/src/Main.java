@@ -8,9 +8,10 @@ public class Main {
 
 	static ArrayList<String> palabras= new ArrayList<String>();
 	static Hashtable<String, Integer> pals= new Hashtable<String, Integer>();
+	static String rutaTest="D:\\acc\\workspace\\extraidoTRAINING\\";
 	
 	public static void main(String[] args) throws Exception{
-		String rutaTest="D:\\acc\\workspace\\extraidoTRAINING\\";
+		
 		ArrayList<String> clavesList = getListaClaves();		
 		for (int i=0; i<10; i++) {						
 			if (i>=0 && i<=9) {			
@@ -43,6 +44,22 @@ public class Main {
 	
 	public static ArrayList<String> getListaClaves() {
 		ArrayList<String> clavesList = new ArrayList<String>();
+		
+		for (int i=0; i<10; i++) {						
+			if (i>=0 && i<=9) {		
+				
+				//getCaracteristicas(i,rutaTest+"TRAIN_0000"+i+".eml", clavesList);				
+			}			
+			if (i>=10 && i<=99) {
+				//getCaracteristicas(i,rutaTest+"TRAIN_000"+i+".eml", clavesList);
+			}
+			if (i>=100 && i<=999) {
+				//getCaracteristicas(i,rutaTest+"TRAIN_00"+i+".eml", clavesList);
+			}
+			if (i>=1000 && i<=9999) {
+				//getCaracteristicas(i,rutaTest+"TRAIN_0"+i+".eml", clavesList);
+			}
+		}
 		
 		return clavesList;
 	}
