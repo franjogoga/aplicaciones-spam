@@ -9,8 +9,7 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception{
 		String rutaTest="D:\\acc\\workspace\\extraidoTRAINING\\";
-		ArrayList<String> clavesList = getListaClaves("/home/jonatan/workspace/claves.txt");
-		//getCaracteristicas(0,"/home/jonatan/workspace/prueba.txt", clavesList);
+		ArrayList<String> clavesList = getListaClaves("/home/jonatan/workspace/claves.txt");		
 		for (int i=0; i<10; i++) {						
 			if (i>=0 && i<=9) {			
 				getCaracteristicas(i,rutaTest+"TRAIN_0000"+i+".eml", clavesList);				
@@ -23,26 +22,18 @@ public class Main {
 			}
 			if (i>=1000 && i<=9999) {
 				getCaracteristicas(i,rutaTest+"TRAIN_0"+i+".eml", clavesList);
-			}			
-		
+			}					
 		}
-		//Map<String, Integer> palsOrdenado= new TreeMap<String, Integer>(pals);
+		
 		LinkedHashMap<String, Integer> palsOrdenado= sortByValues(pals);
-//		ListIterator list = palsOrdenado.keySet().iterator().
 		Iterator iterator = palsOrdenado.keySet().iterator();
-		   
-		while (iterator.hasNext()) {  
+		int i=0;
+		while (iterator.hasNext() && i!=10) {  
 		   String key = iterator.next().toString();  
 		   String value = palsOrdenado.get(key).toString();  		   
 		   System.out.println(key + " " + value);  
-		}  
-		
-		System.out.println("Fin del Main!!!");
-//		Enumeration key = pals.keys();
-//		Enumeration elements = pals.elements();
-//		while (key.hasMoreElements()) {
-//			System.out.println(key.nextElement() + " "+ elements.nextElement());
-//		}
+		   i++;
+		}  		
 	}	
 	
 	public static ArrayList<String> getListaClaves(String clavesArch) {
@@ -100,14 +91,10 @@ public class Main {
             }
         });      
         
-        LinkedHashMap<K,V> sortedMap = new LinkedHashMap<K,V>();
-        
+        LinkedHashMap<K,V> sortedMap = new LinkedHashMap<K,V>();        
         for(int i=entries.size()-1; i>=0; --i) {
         	sortedMap.put(entries.get(i).getKey(), entries.get(i).getValue());
-        }
-//        for(Map.Entry<K,V> entry: entries){
-//            sortedMap.put(entry.getKey(), entry.getValue());
-//        }      
+        }    
         return sortedMap;
     }
 	
