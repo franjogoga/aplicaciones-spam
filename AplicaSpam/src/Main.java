@@ -6,23 +6,24 @@ import org.apache.commons.lang3.StringUtils;
 public class Main {
 	
 	static Hashtable<String, Integer> palabras= new Hashtable<String, Integer>();	
-	static String rutaTest="D:\\acc\\workspace\\extraidoTRAINING\\";
+	static String rutaTraining="D:\\acc\\workspace\\extraidoTRAINING\\";
 	
 	public static void main(String[] args) throws Exception{
 		
-		ArrayList<String> clavesList = getListaClaves();		
+		ArrayList<String> clavesList = getListaClaves();
+		
 //		for (int i=0; i<10; i++) {						
 //			if (i>=0 && i<=9) {			
-//				getCaracteristicas(i,rutaTest+"TRAIN_0000"+i+".eml", clavesList);				
+//				getCaracteristicas(i,rutaTraining+"TRAIN_0000"+i+".eml", clavesList);				
 //			}			
 //			if (i>=10 && i<=99) {
-//				getCaracteristicas(i,rutaTest+"TRAIN_000"+i+".eml", clavesList);
+//				getCaracteristicas(i,rutaTraining+"TRAIN_000"+i+".eml", clavesList);
 //			}
 //			if (i>=100 && i<=999) {
-//				getCaracteristicas(i,rutaTest+"TRAIN_00"+i+".eml", clavesList);
+//				getCaracteristicas(i,rutaTraining+"TRAIN_00"+i+".eml", clavesList);
 //			}
 //			if (i>=1000 && i<=9999) {
-//				getCaracteristicas(i,rutaTest+"TRAIN_0"+i+".eml", clavesList);
+//				getCaracteristicas(i,rutaTraining+"TRAIN_0"+i+".eml", clavesList);
 //			}
 //		}
 					
@@ -36,16 +37,16 @@ public class Main {
 		
 		for (int i=0; i<10; i++) {						
 			if (i>=0 && i<=9) {		
-				getPalabrasFrecuencia(i, rutaTest+"TRAIN_0000"+i+".eml");							
+				getPalabrasFrecuencia(i, rutaTraining+"TRAIN_0000"+i+".eml");							
 			}			
 			if (i>=10 && i<=99) {
-				getPalabrasFrecuencia(i, rutaTest+"TRAIN_000"+i+".eml");
+				getPalabrasFrecuencia(i, rutaTraining+"TRAIN_000"+i+".eml");
 			}
 			if (i>=100 && i<=999) {
-				getPalabrasFrecuencia(i, rutaTest+"TRAIN_00"+i+".eml");
+				getPalabrasFrecuencia(i, rutaTraining+"TRAIN_00"+i+".eml");
 			}
 			if (i>=1000 && i<=9999) {
-				getPalabrasFrecuencia(i, rutaTest+"TRAIN_0"+i+".eml");
+				getPalabrasFrecuencia(i, rutaTraining+"TRAIN_0"+i+".eml");
 			}
 		}
 		
