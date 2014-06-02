@@ -7,10 +7,13 @@ public class Main {
 	
 	static Hashtable<String, Integer> palabras= new Hashtable<String, Integer>();	
 	static String rutaTraining="/home/jonatan/workspace/extraidoTRAINING/";
+	static String rutaStopWords = rutaTraining + "../stopwords.txt";
+	static ArrayList<String> stopWords = new ArrayList<String>();
+	static ArrayList<String> clavesList= new ArrayList<String>();
 	
 	public static void main(String[] args) throws Exception{
-		ArrayList<String> stopWords = getStopWords();
-		ArrayList<String> clavesList = getListaClaves();
+		getStopWords();
+		getListaClaves();
 		
 //		for (int i=0; i<10; i++) {						
 //			if (i>=0 && i<=9) {			
@@ -32,18 +35,22 @@ public class Main {
 //		System.out.println(StringUtils.countMatches(str, findStr));
 	}	
 	
-	public static ArrayList<String> getStopWords () {
-		ArrayList<String> stopWords = new ArrayList<String>();
-		
-		
-		return stopWords;
+	public static void getStopWords() throws Exception{
+		System.out.println("Encontrando lista de stop words ...");
+		File stopWordsArch = new File(rutaStopWords);		
+		Scanner stopWordsScanArch = new Scanner(new FileReader(stopWordsArch));
+		String palabra;
+		while (stopWordsScanArch.hasNext()){		
+		    palabra = stopWordsScanArch.next();
+		    stopWords.add(palabra);			    	    		    		    			    				    		    				   		    			   
+		}
+		stopWordsScanArch.close();		
 	}
 	
-	public static ArrayList<String> getListaClaves() throws Exception{
-		System.out.println("Encontrando cacterísticas (palabras más frecuentes)...");
-		ArrayList<String> clavesList = new ArrayList<String>();
+	public static void getListaClaves() throws Exception{
+		System.out.println("Encontrando características (palabras más frecuentes) ...");		
 		
-		for (int i=0; i<100; i++) {						
+		for (int i=0; i<4000; i++) { //4327 training						
 			if (i>=0 && i<=9) {		
 				getPalabrasFrecuencia(i, rutaTraining+"TRAIN_0000"+i+".eml");							
 			}			
@@ -61,15 +68,14 @@ public class Main {
 		LinkedHashMap<String, Integer> palabrasOrdenado= ordenarPorValores(palabras);
 		Iterator<String> iterator = palabrasOrdenado.keySet().iterator();
 		int i=0;
-		while (iterator.hasNext() && i!=10) {  
+		while (iterator.hasNext() && i!=25) {  
 		   String clave = iterator.next().toString();  		   
 		   String frecuencia = palabrasOrdenado.get(clave).toString();		   
 		   clavesList.add(clave);
-		   System.out.println(" Palabra Clave: "+clave + " " + "\tFrecuencia: "+frecuencia);		   
+		   System.out.println(" Palabra Clave: "+clave + " " + "\t\tFrecuencia: "+frecuencia);		   
 		   i++;
 		}  		
-		System.out.println("");
-		return clavesList;
+		System.out.println("");		
 	}
 	
 	
@@ -96,11 +102,16 @@ public class Main {
 		String palabra;
 		
 		while (correoScanArch.hasNext()){		
-		    palabra = correoScanArch.next();		   
-		    if(palabras.containsKey(palabra))
-		    	palabras.put(palabra, palabras.get(palabra)+1);		    
-		    else 
-		    	palabras.put(palabra, 1);		    	    		    		    			    				    		    				   		    			   
+		    palabra = correoScanArch.next();
+		    palabra = palabra.toLowerCase();
+		    palabra = palabra.replace(".", "");
+		    palabra = palabra.replace(",", "");
+		    if (!stopWords.contains(palabra)) {
+			    if(palabras.containsKey(palabra))
+			    	palabras.put(palabra, palabras.get(palabra)+1);		    
+			    else 
+			    	palabras.put(palabra, 1);		
+		    }
 		}				
 		correoScanArch.close();		
 	}
