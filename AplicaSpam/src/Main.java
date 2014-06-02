@@ -10,6 +10,8 @@ public class Main {
 	static String rutaStopWords = rutaTraining + "../stopwords.txt";
 	static ArrayList<String> stopWords = new ArrayList<String>();
 	static ArrayList<String> clavesList= new ArrayList<String>();
+	static int numeroCaracteristicas = 40;
+	static int numeroCorreosTraining= 4327;
 	
 	public static void main(String[] args) throws Exception{
 		getStopWords();
@@ -50,7 +52,7 @@ public class Main {
 	public static void getListaClaves() throws Exception{
 		System.out.println("Encontrando características (palabras más frecuentes) ...");		
 		
-		for (int i=0; i<4000; i++) { //4327 training						
+		for (int i=0; i<numeroCorreosTraining; i++) { //4327 training
 			if (i>=0 && i<=9) {		
 				getPalabrasFrecuencia(i, rutaTraining+"TRAIN_0000"+i+".eml");							
 			}			
@@ -67,13 +69,12 @@ public class Main {
 		
 		LinkedHashMap<String, Integer> palabrasOrdenado= ordenarPorValores(palabras);
 		Iterator<String> iterator = palabrasOrdenado.keySet().iterator();
-		int i=0;
-		while (iterator.hasNext() && i!=25) {  
+	
+		while (iterator.hasNext()) {  
 		   String clave = iterator.next().toString();  		   
 		   String frecuencia = palabrasOrdenado.get(clave).toString();		   
 		   clavesList.add(clave);
-		   System.out.println(" Palabra Clave: "+clave + " " + "\t\tFrecuencia: "+frecuencia);		   
-		   i++;
+		   System.out.println(" Palabra Clave: "+clave + " " + "\t\tFrecuencia: "+frecuencia);		   		   
 		}  		
 		System.out.println("");		
 	}
@@ -106,6 +107,7 @@ public class Main {
 		    palabra = palabra.toLowerCase();
 		    palabra = palabra.replace(".", "");
 		    palabra = palabra.replace(",", "");
+		    //palabra = palabra.replace("\"", "");
 		    if (!stopWords.contains(palabra)) {
 			    if(palabras.containsKey(palabra))
 			    	palabras.put(palabra, palabras.get(palabra)+1);		    
@@ -152,7 +154,7 @@ public class Main {
         });      
         
         LinkedHashMap<K,V> sortedMap = new LinkedHashMap<K,V>();        
-        for(int i=entries.size()-1; i>=0; --i) {
+        for(int i=entries.size()-1, j=0; i>=0 && j!=numeroCaracteristicas; --i, j++) {
         	sortedMap.put(entries.get(i).getKey(), entries.get(i).getValue());
         }    
         return sortedMap;
