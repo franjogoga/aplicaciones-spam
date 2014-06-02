@@ -11,7 +11,7 @@ public class Main {
 	static ArrayList<String> stopWords = new ArrayList<String>();
 	static ArrayList<String> clavesList= new ArrayList<String>();
 	static int numeroCaracteristicas = 40;
-	static int numeroCorreosTraining= 4327;
+	static int numeroCorreosTraining= 2885; //4327
 	
 	public static void main(String[] args) throws Exception{
 		getStopWords();
