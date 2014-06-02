@@ -6,16 +6,18 @@ import org.apache.commons.lang3.StringUtils;
 public class Main {
 	
 	static Hashtable<String, Integer> palabras= new Hashtable<String, Integer>();	
-	static String rutaTraining="/home/jonatan/workspace/extraidoTRAINING/";
-	static String rutaStopWords = rutaTraining + "../stopwords.txt";
+	static String rutaTraining="D:\\acc\\workspace\\extraidoTRAINING\\";
+	static String rutaStopWords = rutaTraining + "..\\stopwords.txt";
 	static ArrayList<String> stopWords = new ArrayList<String>();
-	static ArrayList<String> clavesList= new ArrayList<String>();
+	static ArrayList<String> clavesList= new ArrayList<String>();	
 	static int numeroCaracteristicas = 40;
-	static int numeroCorreosTraining= 2885; //4327
+	static int numeroCorreosTraining= 2885; //4327 - 2885
+	static double [][] vectoresCaracteristicas = new double[numeroCorreosTraining][numeroCaracteristicas]; 
 	
-	public static void main(String[] args) throws Exception{
-		getStopWords();
+	public static void main(String[] args) throws Exception{		
 		getListaClaves();
+		getVectoresCaracteristicas();
+		
 		
 //		for (int i=0; i<10; i++) {						
 //			if (i>=0 && i<=9) {			
@@ -37,6 +39,10 @@ public class Main {
 //		System.out.println(StringUtils.countMatches(str, findStr));
 	}	
 	
+	public static void getVectoresCaracteristicas() {
+		
+	}
+	
 	public static void getStopWords() throws Exception{
 		System.out.println("Encontrando lista de stop words ...");
 		File stopWordsArch = new File(rutaStopWords);		
@@ -50,7 +56,8 @@ public class Main {
 	}
 	
 	public static void getListaClaves() throws Exception{
-		System.out.println("Encontrando características (palabras más frecuentes) ...");		
+		getStopWords();
+		System.out.println("Encontrando caracteristicas (palabras mas frecuentes) ...");		
 		
 		for (int i=0; i<numeroCorreosTraining; i++) { //4327 training
 			if (i>=0 && i<=9) {		
@@ -76,9 +83,9 @@ public class Main {
 		   clavesList.add(clave);
 		   System.out.println(" Palabra Clave: "+clave + " " + "\t\tFrecuencia: "+frecuencia);		   		   
 		}  		
+		stopWords.clear();
 		System.out.println("");		
-	}
-	
+	}	
 	
 //	public static ArrayList<String> getListaClaves(String clavesArch) {
 //		ArrayList<String> clavesList = new ArrayList<String>();
@@ -107,7 +114,7 @@ public class Main {
 		    palabra = palabra.toLowerCase();
 		    palabra = palabra.replace(".", "");
 		    palabra = palabra.replace(",", "");
-		    //palabra = palabra.replace("\"", "");
+		    
 		    if (!stopWords.contains(palabra)) {
 			    if(palabras.containsKey(palabra))
 			    	palabras.put(palabra, palabras.get(palabra)+1);		    
