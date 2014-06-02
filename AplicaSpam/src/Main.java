@@ -6,10 +6,10 @@ import org.apache.commons.lang3.StringUtils;
 public class Main {
 	
 	static Hashtable<String, Integer> palabras= new Hashtable<String, Integer>();	
-	static String rutaTraining="D:\\acc\\workspace\\extraidoTRAINING\\";
+	static String rutaTraining="/home/jonatan/workspace/extraidoTRAINING/";
 	
 	public static void main(String[] args) throws Exception{
-		
+		ArrayList<String> stopWords = getStopWords();
 		ArrayList<String> clavesList = getListaClaves();
 		
 //		for (int i=0; i<10; i++) {						
@@ -32,10 +32,18 @@ public class Main {
 //		System.out.println(StringUtils.countMatches(str, findStr));
 	}	
 	
+	public static ArrayList<String> getStopWords () {
+		ArrayList<String> stopWords = new ArrayList<String>();
+		
+		
+		return stopWords;
+	}
+	
 	public static ArrayList<String> getListaClaves() throws Exception{
+		System.out.println("Encontrando cacterísticas (palabras más frecuentes)...");
 		ArrayList<String> clavesList = new ArrayList<String>();
 		
-		for (int i=0; i<10; i++) {						
+		for (int i=0; i<100; i++) {						
 			if (i>=0 && i<=9) {		
 				getPalabrasFrecuencia(i, rutaTraining+"TRAIN_0000"+i+".eml");							
 			}			
@@ -51,15 +59,16 @@ public class Main {
 		}
 		
 		LinkedHashMap<String, Integer> palabrasOrdenado= ordenarPorValores(palabras);
-		Iterator iterator = palabrasOrdenado.keySet().iterator();
+		Iterator<String> iterator = palabrasOrdenado.keySet().iterator();
 		int i=0;
 		while (iterator.hasNext() && i!=10) {  
 		   String clave = iterator.next().toString();  		   
 		   String frecuencia = palabrasOrdenado.get(clave).toString();		   
 		   clavesList.add(clave);
-		   System.out.println("Palabra Clave: "+clave + " " + "\tFrecuencia: "+frecuencia);		   
+		   System.out.println(" Palabra Clave: "+clave + " " + "\tFrecuencia: "+frecuencia);		   
 		   i++;
 		}  		
+		System.out.println("");
 		return clavesList;
 	}
 	
