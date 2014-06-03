@@ -87,7 +87,7 @@ public class Main {
 		    palabra = correoScanArch.next();
 		    palabra = palabra.toLowerCase();
 		    contenido = contenido + palabra;		    		    	    
-		}				
+		}
 		
 		if (etiquetasList.get(indice).equals("0")) {			
 			for(int i=0; i<numeroCaracteristicas; i++)
