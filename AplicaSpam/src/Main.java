@@ -18,6 +18,8 @@ public class Main {
 	static int numeroCorreosSpamTraining = 1378;
 	static double [][] matrizCaracteristicasSpam = new double[numeroCorreosSpamTraining][numeroCaracteristicas];
 	static double [][] matrizCaracteristicasHam = new double[numeroCorreosHamTraining][numeroCaracteristicas];
+	static int cuentaSpam=0;
+	static int cuentaHam=0;
 	
 	public static void main(String[] args) throws Exception{		
 		getListaClaves();
@@ -57,7 +59,7 @@ public class Main {
 		trainLabelsScanArch.close();			
 	}
 	
-	public static void getVectoresCaracteristicas() {
+	public static void getVectoresCaracteristicas() throws Exception {
 		System.out.println("Encontrando vectores caracteristicas de todos los correos ...");		
 		
 		for (int i=0; i<numeroCorreosTraining; i++) { //4327 training
@@ -76,8 +78,28 @@ public class Main {
 		}				
 	}
 	
-	public static void getCaracteristicas(int indice, String strCorreoArch) {
+	public static void getCaracteristicas(int indice, String strCorreoArch) throws Exception {
+		File correoArch = new File(strCorreoArch);		
+		Scanner correoScanArch = new Scanner(new FileReader(correoArch));
+		String palabra, contenido="";
 		
+		while (correoScanArch.hasNext()){		
+		    palabra = correoScanArch.next();
+		    palabra = palabra.toLowerCase();
+		    contenido = contenido + palabra;		    		    	    
+		}				
+		
+		if (etiquetasList.get(indice)=="0") {
+			for(int i=0; i<numeroCaracteristicas; i++)
+				matrizCaracteristicasSpam[cuentaSpam][i] = StringUtils.countMatches(contenido, clavesList.get(i));
+			cuentaSpam++;
+	    } 
+	    else {
+	    	for(int i=0; i<numeroCaracteristicas; i++)
+				matrizCaracteristicasHam[cuentaHam][i] = StringUtils.countMatches(contenido, clavesList.get(i));
+	    	cuentaHam++;
+	    }		
+		correoScanArch.close();	
 	}
 	
 	public static void getStopWords() throws Exception{
