@@ -53,10 +53,10 @@ public class Main {
 		while (trainLabelsScanArch.hasNext()){		
 		    palabra = trainLabelsScanArch.next();
 		    if (palabra.equals("0") || palabra.equals("1")) {
-		    	etiquetasList.add(palabra);			    	    	
+		    	etiquetasList.add(palabra);				    	
 		    }	    		    			    				    		    				   		    			   
 		}
-		trainLabelsScanArch.close();			
+		trainLabelsScanArch.close();					
 	}
 	
 	public static void getVectoresCaracteristicas() throws Exception {
@@ -88,16 +88,15 @@ public class Main {
 		    palabra = palabra.toLowerCase();
 		    contenido = contenido + palabra;		    		    	    
 		}				
-		System.out.println("ETIQUETA "+etiquetasList.get(indice));
-		if (etiquetasList.get(indice)=="0") {
+		
+		if (etiquetasList.get(indice).equals("0")) {			
 			for(int i=0; i<numeroCaracteristicas; i++)
 				matrizCaracteristicasSpam[cuentaSpam][i] = StringUtils.countMatches(contenido, clavesList.get(i));
 			cuentaSpam++;			
 	    } 
-	    else {
-	    	for(int i=0; i<numeroCaracteristicas; i++) {
-	    		System.out.println(i + " " +clavesList.get(i) + " "+ cuentaHam);
-				matrizCaracteristicasHam[cuentaHam][i] = StringUtils.countMatches(contenido, clavesList.get(i)); }
+	    else {	    	
+	    	for(int i=0; i<numeroCaracteristicas; i++)
+				matrizCaracteristicasHam[cuentaHam][i] = StringUtils.countMatches(contenido, clavesList.get(i));	    	
 	    	cuentaHam++;
 	    }		
 		correoScanArch.close();	
