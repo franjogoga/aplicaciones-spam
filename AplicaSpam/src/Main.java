@@ -1,14 +1,20 @@
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.math3.analysis.function.Log;
+import org.apache.commons.math3.linear.LUDecomposition;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.stat.correlation.Covariance;
 
 public class Main {
 	
 	static Hashtable<String, Integer> palabras= new Hashtable<String, Integer>();	
-	static String rutaTraining="D:\\acc\\workspace\\extraidoTRAINING\\";
-	static String rutaStopWords = rutaTraining + "..\\stopwords.txt";
-	static String rutaTrainLabels = rutaTraining + "..\\SPAMTrain.label";
+	static String rutaTraining="/home/jonatan/workspace/extraidoTRAINING/";
+	static String rutaStopWords = rutaTraining + "../stopwords.txt";
+	static String rutaTrainLabels = rutaTraining + "../SPAMTrain.label";
 	static ArrayList<String> stopWords = new ArrayList<String>();
 	static ArrayList<String> clavesList= new ArrayList<String>();
 	static ArrayList<String> etiquetasList = new ArrayList<String>();
@@ -18,6 +24,10 @@ public class Main {
 	static int numeroCorreosSpamTraining = 1378;
 	static double [][] matrizCaracteristicasSpam = new double[numeroCorreosSpamTraining][numeroCaracteristicas];
 	static double [][] matrizCaracteristicasHam = new double[numeroCorreosHamTraining][numeroCaracteristicas];
+	static double [][] vectorMediaSpam = new double[numeroCaracteristicas][1];
+	static double [][] vectorMediaHam = new double[numeroCaracteristicas][1];
+	static double [][] matrizCovarianzaSpam;
+	static double [][] matrizCovarianzaHam;
 	static int cuentaSpam=0;
 	static int cuentaHam=0;
 	
@@ -25,28 +35,89 @@ public class Main {
 		getListaClaves();
 		getListaEtiquetas();
 		getVectoresCaracteristicas();		
+		getVectoresMedia();
+		getMatricesCovarianza();			
 		
-//		for (int i=0; i<10; i++) {						
-//			if (i>=0 && i<=9) {			
-//				getCaracteristicas(i,rutaTraining+"TRAIN_0000"+i+".eml", clavesList);				
-//			}			
-//			if (i>=10 && i<=99) {
-//				getCaracteristicas(i,rutaTraining+"TRAIN_000"+i+".eml", clavesList);
-//			}
-//			if (i>=100 && i<=999) {
-//				getCaracteristicas(i,rutaTraining+"TRAIN_00"+i+".eml", clavesList);
-//			}
-//			if (i>=1000 && i<=9999) {
-//				getCaracteristicas(i,rutaTraining+"TRAIN_0"+i+".eml", clavesList);
-//			}
-//		}
-					
-//		String str = "helloslkhellodjladfjhello";
-//		String findStr = "hello";
-//		System.out.println(StringUtils.countMatches(str, findStr));
 	}	
 	
+	public static double funcionClasificadoraSpam(double [][] x) {		
+		RealMatrix vectorMedia = MatrixUtils.createRealMatrix(vectorMediaSpam);
+    	RealMatrix matrizCovarianza = MatrixUtils.createRealMatrix(matrizCovarianzaSpam);    	   	    	
+    	RealMatrix matrizCovInv = new LUDecomposition(matrizCovarianza).getSolver().getInverse();
+    	RealMatrix vector = MatrixUtils.createRealMatrix(x);
+    	RealMatrix subsMatriz = vector.subtract(vectorMedia);    	
+    	RealMatrix transp = subsMatriz.transpose();
+    	double determ = new LUDecomposition(matrizCovarianza).getDeterminant();
+    	int d = numeroCaracteristicas;
+    	RealMatrix mult1 = matrizCovInv.preMultiply(transp);
+    	RealMatrix mult2 = subsMatriz.preMultiply(mult1);
+    	double[][]data = mult2.getData();
+    	double valor = 2*3.141591;
+    	double logarit = new Log().value(valor);
+    	double logarit2 = new Log().value(determ);
+    	    	
+		return -1*0.5*data[0][0] - (d/2)*logarit - 0.5*logarit2;
+	}
+	
+public static double funcionClasificadoraHam(double [][] x) {		
+		RealMatrix vectorMedia = MatrixUtils.createRealMatrix(vectorMediaHam);
+    	RealMatrix matrizCovarianza = MatrixUtils.createRealMatrix(matrizCovarianzaHam);    	   	    	
+    	RealMatrix matrizCovInv = new LUDecomposition(matrizCovarianza).getSolver().getInverse();
+    	RealMatrix vector = MatrixUtils.createRealMatrix(x);
+    	RealMatrix subsMatriz = vector.subtract(vectorMedia);    	
+    	RealMatrix transp = subsMatriz.transpose();
+    	double determ = new LUDecomposition(matrizCovarianza).getDeterminant();
+    	int d = numeroCaracteristicas;
+    	RealMatrix mult1 = matrizCovInv.preMultiply(transp);
+    	RealMatrix mult2 = subsMatriz.preMultiply(mult1);
+    	double[][]data = mult2.getData();
+    	double valor = 2*3.141591;
+    	double logarit = new Log().value(valor);
+    	double logarit2 = new Log().value(determ);
+    	    	
+		return -1*0.5*data[0][0] - (d/2)*logarit - 0.5*logarit2;
+	}
+	
+	public static void getMatricesCovarianza() {
+		System.out.println("Encontrando matrices covarianza ...");
+		Covariance covarianzaSpam = new Covariance(matrizCaracteristicasSpam, false);
+		RealMatrix realCovarianzaSpam = covarianzaSpam.getCovarianceMatrix();
+    	matrizCovarianzaSpam = realCovarianzaSpam.getData();
+		
+    	Covariance covarianzaHam = new Covariance(matrizCaracteristicasHam, false);
+		RealMatrix realCovarianzaHam = covarianzaHam.getCovarianceMatrix();
+    	matrizCovarianzaHam = realCovarianzaHam.getData();		
+	}
+	
+	public static void getVectoresMedia() {
+		System.out.println("Encontrando vectores media ...");
+		for(int i=0; i<numeroCaracteristicas; i++)
+			vectorMediaHam[i][0]=0;
+		
+		for(int i=0; i<numeroCaracteristicas; i++)
+			vectorMediaSpam[i][0]=0;
+					
+		for(int i=0; i<numeroCorreosHamTraining; i++) {
+			for(int j=0; j<numeroCaracteristicas; j++) {
+				vectorMediaHam[j][0]=vectorMediaHam[j][0]+matrizCaracteristicasHam[i][j];
+			}
+		}
+				
+		for(int i=0; i<numeroCorreosSpamTraining; i++) {
+			for(int j=0; j<numeroCaracteristicas; j++) {
+				vectorMediaSpam[j][0]=vectorMediaSpam[j][0]+matrizCaracteristicasSpam[i][j];
+			}
+		}		
+
+		for(int i=0; i<numeroCaracteristicas; i++)
+			vectorMediaHam[i][0]=vectorMediaHam[i][0]/numeroCorreosHamTraining;
+		
+		for(int i=0; i<numeroCaracteristicas; i++)
+			vectorMediaSpam[i][0]=vectorMediaSpam[i][0]/numeroCorreosSpamTraining;
+	}
+	
 	public static void getListaEtiquetas() throws Exception {
+		System.out.println("Encontrando lista de etiquetas de training ...");
 		File trainLabelsArch = new File(rutaTrainLabels);		
 		Scanner trainLabelsScanArch = new Scanner(new FileReader(trainLabelsArch));
 		String palabra;
@@ -86,25 +157,25 @@ public class Main {
 		while (correoScanArch.hasNext()){		
 		    palabra = correoScanArch.next();
 		    palabra = palabra.toLowerCase();
-		    contenido = contenido + palabra;		    		    	    
-		}
+		    contenido = contenido + palabra;
+		    }
 		
-		if (etiquetasList.get(indice).equals("0")) {			
+		if (etiquetasList.get(indice).equals("0")) {
 			for(int i=0; i<numeroCaracteristicas; i++)
 				matrizCaracteristicasSpam[cuentaSpam][i] = StringUtils.countMatches(contenido, clavesList.get(i));
-			cuentaSpam++;			
-	    } 
-	    else {	    	
+			cuentaSpam++;
+		}
+	    else {
 	    	for(int i=0; i<numeroCaracteristicas; i++)
-				matrizCaracteristicasHam[cuentaHam][i] = StringUtils.countMatches(contenido, clavesList.get(i));	    	
+				matrizCaracteristicasHam[cuentaHam][i] = StringUtils.countMatches(contenido, clavesList.get(i));
 	    	cuentaHam++;
-	    }		
-		correoScanArch.close();	
+	    }
+		correoScanArch.close();
 	}
 	
 	public static void getStopWords() throws Exception{
 		System.out.println("Encontrando lista de stop words ...");
-		File stopWordsArch = new File(rutaStopWords);		
+		File stopWordsArch = new File(rutaStopWords);
 		Scanner stopWordsScanArch = new Scanner(new FileReader(stopWordsArch));
 		String palabra;
 		while (stopWordsScanArch.hasNext()){		
@@ -140,10 +211,9 @@ public class Main {
 		   String clave = iterator.next().toString();  		   
 		   String frecuencia = palabrasOrdenado.get(clave).toString();		   
 		   clavesList.add(clave);
-		   System.out.println(" Palabra Clave: "+clave + " " + "\t\tFrecuencia: "+frecuencia);		   		   
+		   System.out.println("  Palabra Clave: "+clave + " " + "\t\tFrecuencia: "+frecuencia);		   		   
 		}  		
-		stopWords.clear();
-		System.out.println("");		
+		stopWords.clear();		
 	}	
 	
 //	public static ArrayList<String> getListaClaves(String clavesArch) {
@@ -182,31 +252,6 @@ public class Main {
 		    }
 		}				
 		correoScanArch.close();		
-	}
-
-	public static void getCaracteristicas(int i, String strCorreoArch, ArrayList<String> clavesList) throws Exception {
-		File correoArch = new File(strCorreoArch);		
-		Scanner correoScanArch = new Scanner(new FileReader(correoArch));						
-				 		
-		String palabra, contenido="";
-		int cantClaves=0;
-		while (correoScanArch.hasNext()){		
-		    palabra = correoScanArch.next();		   
-		    if(palabras.containsKey(palabra)) {
-		    	palabras.put(palabra, palabras.get(palabra)+1);
-		    } 
-		    else {
-		    	palabras.put(palabra, 1);
-		    }		    		    
-		    contenido=contenido.toLowerCase()+" "+palabra;				    				    		    				   		    			    
-		}				
-		correoScanArch.close();
-		
-//		for(int j=0; j<clavesList.size(); j++) {
-//	    	if (contenido.contains(clavesList.get(j)))
-//	    		cantClaves++;
-//	    }
-		System.out.println("Correo:"+i+"\tFrases clave:"+cantClaves);	
 	}	
 
 	public static <K extends Comparable,V extends Comparable> LinkedHashMap<K,V> ordenarPorValores(Map<K,V> map){
