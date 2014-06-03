@@ -88,15 +88,16 @@ public class Main {
 		    palabra = palabra.toLowerCase();
 		    contenido = contenido + palabra;		    		    	    
 		}				
-		
+		System.out.println("ETIQUETA "+etiquetasList.get(indice));
 		if (etiquetasList.get(indice)=="0") {
 			for(int i=0; i<numeroCaracteristicas; i++)
 				matrizCaracteristicasSpam[cuentaSpam][i] = StringUtils.countMatches(contenido, clavesList.get(i));
-			cuentaSpam++;
+			cuentaSpam++;			
 	    } 
 	    else {
-	    	for(int i=0; i<numeroCaracteristicas; i++)
-				matrizCaracteristicasHam[cuentaHam][i] = StringUtils.countMatches(contenido, clavesList.get(i));
+	    	for(int i=0; i<numeroCaracteristicas; i++) {
+	    		System.out.println(i + " " +clavesList.get(i) + " "+ cuentaHam);
+				matrizCaracteristicasHam[cuentaHam][i] = StringUtils.countMatches(contenido, clavesList.get(i)); }
 	    	cuentaHam++;
 	    }		
 		correoScanArch.close();	
