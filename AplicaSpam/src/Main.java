@@ -8,16 +8,21 @@ public class Main {
 	static Hashtable<String, Integer> palabras= new Hashtable<String, Integer>();	
 	static String rutaTraining="D:\\acc\\workspace\\extraidoTRAINING\\";
 	static String rutaStopWords = rutaTraining + "..\\stopwords.txt";
+	static String rutaTrainLabels = rutaTraining + "..\\SPAMTrain.label";
 	static ArrayList<String> stopWords = new ArrayList<String>();
-	static ArrayList<String> clavesList= new ArrayList<String>();	
+	static ArrayList<String> clavesList= new ArrayList<String>();
+	static ArrayList<String> etiquetasList = new ArrayList<String>();
 	static int numeroCaracteristicas = 40;
-	static int numeroCorreosTraining= 2885; //4327 - 2885
-	static double [][] vectoresCaracteristicas = new double[numeroCorreosTraining][numeroCaracteristicas]; 
+	static int numeroCorreosTraining= 4327; //4327 - 2885
+	static int numeroCorreosHamTraining = 2949;
+	static int numeroCorreosSpamTraining = 1378;
+	static double [][] matrizCaracteristicasSpam = new double[numeroCorreosSpamTraining][numeroCaracteristicas];
+	static double [][] matrizCaracteristicasHam = new double[numeroCorreosHamTraining][numeroCaracteristicas];
 	
 	public static void main(String[] args) throws Exception{		
 		getListaClaves();
-		getVectoresCaracteristicas();
-		
+		getListaEtiquetas();
+		getVectoresCaracteristicas();		
 		
 //		for (int i=0; i<10; i++) {						
 //			if (i>=0 && i<=9) {			
@@ -39,7 +44,39 @@ public class Main {
 //		System.out.println(StringUtils.countMatches(str, findStr));
 	}	
 	
+	public static void getListaEtiquetas() throws Exception {
+		File trainLabelsArch = new File(rutaTrainLabels);		
+		Scanner trainLabelsScanArch = new Scanner(new FileReader(trainLabelsArch));
+		String palabra;
+		while (trainLabelsScanArch.hasNext()){		
+		    palabra = trainLabelsScanArch.next();
+		    if (palabra.equals("0") || palabra.equals("1")) {
+		    	etiquetasList.add(palabra);			    	    	
+		    }	    		    			    				    		    				   		    			   
+		}
+		trainLabelsScanArch.close();			
+	}
+	
 	public static void getVectoresCaracteristicas() {
+		System.out.println("Encontrando vectores caracteristicas de todos los correos ...");		
+		
+		for (int i=0; i<numeroCorreosTraining; i++) { //4327 training
+			if (i>=0 && i<=9) {		
+				getCaracteristicas(i, rutaTraining+"TRAIN_0000"+i+".eml");							
+			}			
+			if (i>=10 && i<=99) {
+				getCaracteristicas(i, rutaTraining+"TRAIN_000"+i+".eml");
+			}
+			if (i>=100 && i<=999) {
+				getCaracteristicas(i, rutaTraining+"TRAIN_00"+i+".eml");
+			}
+			if (i>=1000 && i<=9999) {
+				getCaracteristicas(i, rutaTraining+"TRAIN_0"+i+".eml");
+			}
+		}				
+	}
+	
+	public static void getCaracteristicas(int indice, String strCorreoArch) {
 		
 	}
 	
@@ -61,16 +98,16 @@ public class Main {
 		
 		for (int i=0; i<numeroCorreosTraining; i++) { //4327 training
 			if (i>=0 && i<=9) {		
-				getPalabrasFrecuencia(i, rutaTraining+"TRAIN_0000"+i+".eml");							
+				getPalabrasFrecuencia(rutaTraining+"TRAIN_0000"+i+".eml");							
 			}			
 			if (i>=10 && i<=99) {
-				getPalabrasFrecuencia(i, rutaTraining+"TRAIN_000"+i+".eml");
+				getPalabrasFrecuencia(rutaTraining+"TRAIN_000"+i+".eml");
 			}
 			if (i>=100 && i<=999) {
-				getPalabrasFrecuencia(i, rutaTraining+"TRAIN_00"+i+".eml");
+				getPalabrasFrecuencia(rutaTraining+"TRAIN_00"+i+".eml");
 			}
 			if (i>=1000 && i<=9999) {
-				getPalabrasFrecuencia(i, rutaTraining+"TRAIN_0"+i+".eml");
+				getPalabrasFrecuencia(rutaTraining+"TRAIN_0"+i+".eml");
 			}
 		}
 		
@@ -104,7 +141,7 @@ public class Main {
 //		return clavesList;
 //	}
 	
-	public static void getPalabrasFrecuencia(int i, String strCorreoArch) throws Exception{
+	public static void getPalabrasFrecuencia(String strCorreoArch) throws Exception{
 		File correoArch = new File(strCorreoArch);		
 		Scanner correoScanArch = new Scanner(new FileReader(correoArch));
 		String palabra;
