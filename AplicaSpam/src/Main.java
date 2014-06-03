@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.math3.analysis.function.Log;
 import org.apache.commons.math3.linear.LUDecomposition;
@@ -18,7 +17,7 @@ public class Main {
 	static ArrayList<String> stopWords = new ArrayList<String>();
 	static ArrayList<String> clavesList= new ArrayList<String>();
 	static ArrayList<String> etiquetasList = new ArrayList<String>();
-	static int numeroCaracteristicas = 40;
+	static int numeroCaracteristicas = 20;
 	static int numeroCorreosTraining= 4327; //4327 - 2885
 	static int numeroCorreosHamTraining = 2949;
 	static int numeroCorreosSpamTraining = 1378;
@@ -38,6 +37,20 @@ public class Main {
 		getVectoresMedia();
 		getMatricesCovarianza();			
 		
+//		for(int i=0; i<numeroCorreosSpamTraining; i++) {
+//			for (int j=0; j<numeroCaracteristicas; j++) {
+//				System.out.print(matrizCaracteristicasSpam[i][j] + " ");
+//			}
+//			System.out.println("");
+//		}
+		
+		double [][] x= new double[numeroCaracteristicas][1];
+		for(int i=0; i<numeroCaracteristicas; i++) {
+			x[i][0]=matrizCaracteristicasSpam[2][i];
+		}
+		
+		System.out.println("Probabilidad Spam = "+funcionClasificadoraSpam(x));
+		System.out.println("Probabilidad Ham = "+funcionClasificadoraHam(x));				
 	}	
 	
 	public static double funcionClasificadoraSpam(double [][] x) {		
@@ -56,7 +69,7 @@ public class Main {
     	double logarit = new Log().value(valor);
     	double logarit2 = new Log().value(determ);
     	    	
-		return -1*0.5*data[0][0] - (d/2)*logarit - 0.5*logarit2;
+		return -1*0.5*data[0][0] - (d/2)*logarit - 0.5*logarit2+100;
 	}
 	
 public static double funcionClasificadoraHam(double [][] x) {		
@@ -75,7 +88,7 @@ public static double funcionClasificadoraHam(double [][] x) {
     	double logarit = new Log().value(valor);
     	double logarit2 = new Log().value(determ);
     	    	
-		return -1*0.5*data[0][0] - (d/2)*logarit - 0.5*logarit2;
+		return -1*0.5*data[0][0] - (d/2)*logarit - 0.5*logarit2+100;
 	}
 	
 	public static void getMatricesCovarianza() {
@@ -158,16 +171,16 @@ public static double funcionClasificadoraHam(double [][] x) {
 		    palabra = correoScanArch.next();
 		    palabra = palabra.toLowerCase();
 		    contenido = contenido + palabra;
-		    }
-		
+		}
+		Random r = new Random();
 		if (etiquetasList.get(indice).equals("0")) {
 			for(int i=0; i<numeroCaracteristicas; i++)
-				matrizCaracteristicasSpam[cuentaSpam][i] = StringUtils.countMatches(contenido, clavesList.get(i));
+				matrizCaracteristicasSpam[cuentaSpam][i] = r.nextFloat()/1000.0 +StringUtils.countMatches(contenido, clavesList.get(i));
 			cuentaSpam++;
 		}
 	    else {
 	    	for(int i=0; i<numeroCaracteristicas; i++)
-				matrizCaracteristicasHam[cuentaHam][i] = StringUtils.countMatches(contenido, clavesList.get(i));
+				matrizCaracteristicasHam[cuentaHam][i] = r.nextFloat()/1000.0+StringUtils.countMatches(contenido, clavesList.get(i));
 	    	cuentaHam++;
 	    }
 		correoScanArch.close();
