@@ -17,7 +17,7 @@ public class Main {
 	static ArrayList<String> stopWords = new ArrayList<String>();
 	static ArrayList<String> clavesList= new ArrayList<String>();
 	static ArrayList<String> etiquetasList = new ArrayList<String>();
-	static int numeroCaracteristicas = 20;
+	static int numeroCaracteristicas = 30;
 	static int numeroCorreosTraining= 4327; //4327 - 2885
 	static int numeroCorreosHamTraining = 2949;
 	static int numeroCorreosSpamTraining = 1378;
