@@ -229,22 +229,22 @@ public static double funcionClasificadoraHam(double [][] x) {
 		stopWords.clear();		
 	}	
 	
-//	public static ArrayList<String> getListaClaves(String clavesArch) {
-//		ArrayList<String> clavesList = new ArrayList<String>();
-//		try {
-//			FileInputStream fstream = new FileInputStream(clavesArch);
-//			DataInputStream entrada = new DataInputStream(fstream);
-//			BufferedReader buffer = new BufferedReader(new InputStreamReader(entrada));			
-//			String strLinea;
-//
-//			while ((strLinea = buffer.readLine()) != null) 
-//				clavesList.add(strLinea);							
-//			entrada.close();			
-//		} catch (Exception e) {
-//			System.err.println("Ocurrio un error: " + e.getMessage());
-//		}		
-//		return clavesList;
-//	}
+	public static ArrayList<String> getListaClaves2(String clavesArch) {
+		ArrayList<String> clavesList = new ArrayList<String>();
+		try {
+			FileInputStream fstream = new FileInputStream(clavesArch);
+			DataInputStream entrada = new DataInputStream(fstream);
+			BufferedReader buffer = new BufferedReader(new InputStreamReader(entrada));			
+			String strLinea;
+
+			while ((strLinea = buffer.readLine()) != null) 
+				clavesList.add(strLinea);							
+			entrada.close();			
+		} catch (Exception e) {
+			System.err.println("Ocurrio un error: " + e.getMessage());
+		}		
+		return clavesList;
+	}
 	
 	public static void getPalabrasFrecuencia(String strCorreoArch) throws Exception{
 		File correoArch = new File(strCorreoArch);		
