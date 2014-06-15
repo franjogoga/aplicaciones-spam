@@ -163,11 +163,11 @@ public static double funcionClasificadoraHam(double [][] x) {
 	}
 	
 	public static void getCaracteristicas(int indice, String strCorreoArch) throws Exception {
-		File correoArch = new File(strCorreoArch);		
+		File correoArch = new File(strCorreoArch);
 		Scanner correoScanArch = new Scanner(new FileReader(correoArch));
 		String palabra, contenido="";
 		
-		while (correoScanArch.hasNext()){		
+		while (correoScanArch.hasNext()){
 		    palabra = correoScanArch.next();
 		    palabra = palabra.toLowerCase();
 		    contenido = contenido + palabra;
