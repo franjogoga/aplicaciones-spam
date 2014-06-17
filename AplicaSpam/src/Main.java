@@ -29,6 +29,7 @@ public class Main {
 	static double [][] matrizCovarianzaHam;
 	static int cuentaSpam=0;
 	static int cuentaHam=0;
+	static int [][] matrizConfusion= new int[2][2];
 	
 	public static void main(String[] args) throws Exception{		
 		getListaClaves();
@@ -44,13 +45,15 @@ public class Main {
 //			System.out.println("");
 //		}
 		
-		double [][] x= new double[numeroCaracteristicas][1];
+		double [][] x= new double[numeroCaracteristicas][1];		
+		
 		for(int i=0; i<numeroCaracteristicas; i++) {
 			x[i][0]=matrizCaracteristicasSpam[2][i];
-		}
-		
+		}		
 		System.out.println("Probabilidad Spam = "+funcionClasificadoraSpam(x));
-		System.out.println("Probabilidad Ham = "+funcionClasificadoraHam(x));				
+		System.out.println("Probabilidad Ham = "+funcionClasificadoraHam(x));
+		
+		
 	}	
 	
 	public static double funcionClasificadoraSpam(double [][] x) {		
