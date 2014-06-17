@@ -18,7 +18,7 @@ public class Main {
 	static ArrayList<String> stopWords = new ArrayList<String>();
 	static ArrayList<String> clavesList= new ArrayList<String>();
 	static ArrayList<String> etiquetasList = new ArrayList<String>();
-	static int numeroCaracteristicas = 30;
+	static int numeroCaracteristicas = 180;
 	static int numeroCorreosTraining= 4327; //4327 - 2885
 	static int numeroCorreosHamTraining = 2949;
 	static int numeroCorreosSpamTraining = 1378;
@@ -39,9 +39,30 @@ public class Main {
 		getVectoresMedia();
 		getMatricesCovarianza();			
 		getMatrizConfusion();
-			
-		
+		imprimirMatrizConfusion();
+		getIndiceAcierto();
 	}	
+	
+	public static void getIndiceAcierto() {
+		System.out.print("Porcentaje de acierto : ");
+		double indice=0;
+		for(int i=0; i<2; i++) {
+			for(int j=0; j<2; j++) {
+				if (i==j) indice+=matrizConfusion[i][j];				
+			}			
+		}
+		System.out.println(100*indice/numeroCorreosTraining+"%");
+	}	
+	
+	public static void imprimirMatrizConfusion() {
+		System.out.println("Imprimiendo matriz de confusion:");
+		for(int i=0; i<2; i++) {
+			for(int j=0; j<2; j++) {
+				System.out.print(matrizConfusion[i][j]+"\t");
+			}
+			System.out.println("");
+		}
+	}
 	
 	public static void getMatrizConfusion() {
 		System.out.println("Encontrando matriz de confusion ...");
@@ -70,7 +91,7 @@ public class Main {
 		
 		for(int c=0; c<numeroCorreosHamTraining; c++) {
 			for(int i=0; i<numeroCaracteristicas; i++) {
-				x[i][0]=matrizCaracteristicasSpam[c][i];
+				x[i][0]=matrizCaracteristicasHam[c][i];
 			}
 			spam=funcionClasificadoraSpam(x);
 			ham=funcionClasificadoraHam(x);			
