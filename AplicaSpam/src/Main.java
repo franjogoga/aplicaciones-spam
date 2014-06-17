@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.math3.analysis.function.Log;
 import org.apache.commons.math3.linear.LUDecomposition;
@@ -37,24 +38,48 @@ public class Main {
 		getVectoresCaracteristicas();		
 		getVectoresMedia();
 		getMatricesCovarianza();			
-		
-//		for(int i=0; i<numeroCorreosSpamTraining; i++) {
-//			for (int j=0; j<numeroCaracteristicas; j++) {
-//				System.out.print(matrizCaracteristicasSpam[i][j] + " ");
-//			}
-//			System.out.println("");
-//		}
-		
-		double [][] x= new double[numeroCaracteristicas][1];		
-		
-		for(int i=0; i<numeroCaracteristicas; i++) {
-			x[i][0]=matrizCaracteristicasSpam[2][i];
-		}		
-		System.out.println("Probabilidad Spam = "+funcionClasificadoraSpam(x));
-		System.out.println("Probabilidad Ham = "+funcionClasificadoraHam(x));
-		
+		getMatrizConfusion();
+			
 		
 	}	
+	
+	public static void getMatrizConfusion() {
+		System.out.println("Encontrando matriz de confusion ...");
+		double spam, ham;
+		
+		double mayor;		
+		double [][] x= new double[numeroCaracteristicas][1];
+		
+		for(int i=0; i<2; i++) {
+			for(int j=0; j<2; j++) {
+				matrizConfusion[i][j]=0;
+			}
+		}
+		
+		for(int c=0; c<numeroCorreosSpamTraining; c++) {
+			for(int i=0; i<numeroCaracteristicas; i++) {
+				x[i][0]=matrizCaracteristicasSpam[c][i];
+			}
+			spam=funcionClasificadoraSpam(x);
+			ham=funcionClasificadoraHam(x);			
+			mayor=Math.max(spam, ham);
+			
+			if (mayor==spam) matrizConfusion[0][0]=matrizConfusion[0][0]+1;
+			if (mayor==ham) matrizConfusion[0][1]=matrizConfusion[0][1]+1;;			
+		}
+		
+		for(int c=0; c<numeroCorreosHamTraining; c++) {
+			for(int i=0; i<numeroCaracteristicas; i++) {
+				x[i][0]=matrizCaracteristicasSpam[c][i];
+			}
+			spam=funcionClasificadoraSpam(x);
+			ham=funcionClasificadoraHam(x);			
+			mayor=Math.max(spam, ham);
+			
+			if (mayor==spam) matrizConfusion[1][0]=matrizConfusion[1][0]+1;
+			if (mayor==ham) matrizConfusion[1][1]=matrizConfusion[1][1]+1;;			
+		}				
+	}
 	
 	public static double funcionClasificadoraSpam(double [][] x) {		
 		RealMatrix vectorMedia = MatrixUtils.createRealMatrix(vectorMediaSpam);
